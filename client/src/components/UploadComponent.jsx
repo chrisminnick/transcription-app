@@ -1,6 +1,5 @@
 // src/components/UploadComponent.js
 import React, { useState } from 'react';
-import useTranscription from '../hooks/useTranscription';
 
 /**
  * Component for handling the upload of image files for transcription.
@@ -9,7 +8,6 @@ import useTranscription from '../hooks/useTranscription';
  */
 const UploadComponent = ({ transcribeImage }) => {
   const [file, setFile] = useState(null);
-  //const { transcribeImage } = useTranscription();
 
   /**
    * Handles the change event on the file input.
