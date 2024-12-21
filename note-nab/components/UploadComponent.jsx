@@ -1,7 +1,7 @@
 // src/components/UploadComponent.js
 import React, { useState } from 'react';
 import { View, Text, Button, StyleSheet } from 'react-native';
-import { launchImageLibrary } from 'react-native-image-picker';
+import * as ImagePicker from 'expo-image-picker';
 
 /**
  * Component for handling the upload of image files for transcription.
@@ -16,10 +16,17 @@ const UploadComponent = ({ transcribeImage }) => {
    * Sets the selected file to state and initiates transcription.
    */
   const handleUpload = async () => {
-    const result = await launchImageLibrary({ mediaType: 'photo' });
+    // No permissions request is necessary for launching the image library
+    let result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ['images', 'videos'],
+      allowsEditing: true,
+      aspect: [4, 3],
+      quality: 1,
+    });
     if (result.assets && result.assets.length > 0) {
       const newFile = result.assets[0];
       setFile(newFile);
+      console.log(newFile);
       await transcribeImage(newFile);
     }
   };
