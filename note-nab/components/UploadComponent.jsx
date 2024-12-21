@@ -36,9 +36,6 @@ const UploadComponent = ({ transcribeImage }) => {
         setFile(newFile);
         await transcribeImage(null, newFile);
       }
-
-      setFile(newFile);
-      await transcribeImage(newFile);
     }
   };
 

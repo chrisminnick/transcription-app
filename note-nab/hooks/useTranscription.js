@@ -30,7 +30,7 @@ const useTranscription = () => {
           body: formData,
         });
       } else {
-        http: response = await fetch('http://10.0.0.32:3000/transcribe', {
+        response = await fetch('http://10.0.0.32:3000/transcribe', {
           method: 'POST',
           body: JSON.stringify({ image: base64 }),
           headers: {
