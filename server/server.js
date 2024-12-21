@@ -1,5 +1,6 @@
 import express from 'express';
 import multer from 'multer';
+import fs from 'fs';
 const upload = multer({ dest: 'uploads/' });
 
 import OpenAI from 'openai';
@@ -13,6 +14,15 @@ const openai = new OpenAI({
 
 app.use(express.json());
 app.use(cors());
+
+//function to encode file data to base64 encoded string
+function base64_encode(file) {
+  // read binary data
+  var bitmap = fs.readFileSync(file);
+  // convert binary data to base64 encoded string
+  return Buffer.from(bitmap).toString('base64');
+}
+
 app.post('/transcribe', upload.single('image'), async (req, res) => {
   const context = [
     {
@@ -27,16 +37,28 @@ app.post('/transcribe', upload.single('image'), async (req, res) => {
   ];
 
   const image = req.file;
+  const base64image = base64_encode(image.path);
   if (!image) {
     return res.status(400).send('No image uploaded');
   }
 
-  const messages = [...context, { role: 'user', content: image.path }];
+  const messages = [
+    ...context,
+    {
+      role: 'user',
+      content: [
+        {
+          type: 'image_url',
+          image_url: { url: `data:image/jpeg;base64,${base64image}` },
+        },
+      ],
+    },
+  ];
   console.log(messages);
 
   try {
     const response = await openai.chat.completions.create({
-      model: 'gpt-4o',
+      model: 'gpt-4o-mini',
       messages: messages,
       temperature: 0.5,
       max_tokens: 255,
