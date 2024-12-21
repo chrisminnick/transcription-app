@@ -16,6 +16,7 @@ const UploadComponent = ({ transcribeImage }) => {
    */
   const handleUpload = async (event) => {
     const newFile = event.target.files[0];
+    console.log(newFile);
     if (newFile) {
       setFile(newFile);
       await transcribeImage(newFile);

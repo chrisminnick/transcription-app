@@ -25,7 +25,8 @@ function base64_encode(file) {
 
 app.post('/transcribe', upload.single('image'), async (req, res) => {
   try {
-    if (!req.file) {
+    console.log(req.body);
+    if (!(req.file || req.body.image)) {
       return res.status(400).send('No file uploaded.');
     }
     const context = [
@@ -34,14 +35,19 @@ app.post('/transcribe', upload.single('image'), async (req, res) => {
         content: [
           {
             type: 'text',
-            text: "You are an expert handwriting transcription service. When you receive a handwritten document, you'll respond with an accurate transcription, without changing any of the spelling, punctuation or words in the original text. If you encounter words or punctuation that you're not able to read, pick the most likely thing based on the context.",
+            text: "You are an expert handwriting transcription service. When you receive a handwritten document, you'll respond with an accurate transcription, without changing any of the spelling, punctuation or words in the original text.",
           },
         ],
       },
     ];
-
-    const base64image = base64_encode(req.file.path);
-
+    let base64image = '';
+    if (req.file) {
+      base64image = base64_encode(req.file.path);
+    } else {
+      base64image = req.body.image;
+      console.log(`base64 image: ${base64image}`);
+    }
+    console.log(`base64 image: ${base64image}`);
     const messages = [
       ...context,
       {
@@ -49,12 +55,15 @@ app.post('/transcribe', upload.single('image'), async (req, res) => {
         content: [
           {
             type: 'image_url',
-            image_url: { url: `data:image/jpeg;base64,${base64image}` },
+            image_url: {
+              url: `data:image/jpeg;base64,${base64image}`,
+            },
           },
         ],
       },
     ];
 
+    //console.log(JSON.stringify(messages));
     try {
       const response = await openai.chat.completions.create({
         model: 'gpt-4o-mini',

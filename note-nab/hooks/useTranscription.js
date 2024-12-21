@@ -15,19 +15,29 @@ const useTranscription = () => {
    * Transcribes the given image file using OpenAI's API.
    * @param {File} image - The image file to be transcribed.
    */
-  const transcribeImage = async (image) => {
+  const transcribeImage = async (image, base64) => {
     setIsLoading(true);
     setTranscription('');
     setError(null);
 
     try {
-      const formData = new FormData();
-      formData.append('image', image);
-
-      const response = await fetch('http://localhost:3000/transcribe', {
-        method: 'POST',
-        body: formData,
-      });
+      let response;
+      if (image) {
+        const formData = new FormData();
+        formData.append('image', image);
+        response = await fetch('http://localhost:3000/transcribe', {
+          method: 'POST',
+          body: formData,
+        });
+      } else {
+        response = await fetch('http://localhost:3000/transcribe', {
+          method: 'POST',
+          body: JSON.stringify({ image: base64 }),
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        });
+      }
 
       const result = await response.json();
       console.log(result);

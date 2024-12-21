@@ -18,15 +18,26 @@ const UploadComponent = ({ transcribeImage }) => {
   const handleUpload = async () => {
     // No permissions request is necessary for launching the image library
     let result = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes: ['images', 'videos'],
+      mediaTypes: ['images'],
       allowsEditing: true,
+      base64: true,
       aspect: [4, 3],
       quality: 1,
     });
     if (result.assets && result.assets.length > 0) {
-      const newFile = result.assets[0];
+      let newFile = null;
+      if (result.assets[0].file) {
+        newFile = result.assets[0].file;
+        setFile(newFile);
+        await transcribeImage(newFile);
+      } else {
+        // If no file is available, use the base64 data
+        newFile = result.assets[0].base64;
+        setFile(newFile);
+        await transcribeImage(null, newFile);
+      }
+
       setFile(newFile);
-      console.log(newFile);
       await transcribeImage(newFile);
     }
   };
