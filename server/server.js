@@ -1,6 +1,8 @@
 import express from 'express';
 import multer from 'multer';
 import fs from 'fs';
+import bodyParser from 'body-parser'; // Import body-parser
+
 const upload = multer({ dest: 'uploads/' });
 
 import OpenAI from 'openai';
@@ -11,6 +13,9 @@ const app = express();
 const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY,
 });
+// Increase payload size limit
+app.use(bodyParser.json({ limit: '50mb' }));
+app.use(bodyParser.urlencoded({ limit: '50mb', extended: true }));
 
 app.use(express.json());
 app.use(cors());
@@ -23,11 +28,13 @@ function base64_encode(file) {
   return Buffer.from(bitmap).toString('base64');
 }
 
+app.get('/', (req, res) => {
+  res.send('Hello World!');
+});
 app.post('/transcribe', upload.single('image'), async (req, res) => {
   try {
-    console.log(req.body);
-    if (!(req.file || req.body.image)) {
-      return res.status(400).send('No file uploaded.');
+    if (!req.file && !req.body.image) {
+      return res.status(400).send('No file or base64 image uploaded.');
     }
     const context = [
       {
@@ -45,9 +52,7 @@ app.post('/transcribe', upload.single('image'), async (req, res) => {
       base64image = base64_encode(req.file.path);
     } else {
       base64image = req.body.image;
-      console.log(`base64 image: ${base64image}`);
     }
-    console.log(`base64 image: ${base64image}`);
     const messages = [
       ...context,
       {
@@ -63,7 +68,6 @@ app.post('/transcribe', upload.single('image'), async (req, res) => {
       },
     ];
 
-    //console.log(JSON.stringify(messages));
     try {
       const response = await openai.chat.completions.create({
         model: 'gpt-4o-mini',
@@ -74,14 +78,15 @@ app.post('/transcribe', upload.single('image'), async (req, res) => {
         frequency_penalty: 0,
         presence_penalty: 0,
       });
-      console.log(response.choices[0].message.content);
       res.json({ response });
     } catch (err) {
       console.error('Error during transcription:', err);
+      console.error('Error stack:', err.stack);
       res.status(500).send('Failed to transcribe image');
     }
-  } catch (error) {
-    res.status(500).send('An error occurred.');
+  } catch (err) {
+    console.error('Error during transcription:', err);
+    res.status(500).send('Failed to transcribe image');
   }
 });
 app.listen(3000, () => {

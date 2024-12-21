@@ -1,6 +1,6 @@
 // src/components/UploadComponent.js
 import React, { useState } from 'react';
-import { View, Text, Button, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
 
 /**
@@ -44,8 +44,9 @@ const UploadComponent = ({ transcribeImage }) => {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.heading}>Upload your image for transcription</Text>
-      <Button title="Select Image" onPress={handleUpload} />
+      <TouchableOpacity style={styles.button} onPress={handleUpload}>
+        <Text style={styles.buttonText}>Select Image</Text>
+      </TouchableOpacity>
     </View>
   );
 };
@@ -59,6 +60,18 @@ const styles = StyleSheet.create({
     fontSize: 20,
     fontWeight: 'bold',
     marginBottom: 8,
+  },
+  button: {
+    marginTop: 16,
+    borderRadius: 8,
+    padding: 16,
+    color: '#fff',
+    backgroundColor: '#007AFF',
+  },
+  buttonText: {
+    color: '#fff',
+    fontSize: 16,
+    textAlign: 'center',
   },
 });
 

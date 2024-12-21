@@ -30,7 +30,7 @@ const useTranscription = () => {
           body: formData,
         });
       } else {
-        response = await fetch('http://localhost:3000/transcribe', {
+        http: response = await fetch('http://10.0.0.32:3000/transcribe', {
           method: 'POST',
           body: JSON.stringify({ image: base64 }),
           headers: {
@@ -40,11 +40,9 @@ const useTranscription = () => {
       }
 
       const result = await response.json();
-      console.log(result);
       setTranscription(result.response.choices[0].message.content);
     } catch (err) {
-      setError('Failed to transcribe image. Please try again.');
-      console.error('Error during image transcription:', err);
+      console.log('Error during transcription:', err);
     } finally {
       setIsLoading(false);
     }

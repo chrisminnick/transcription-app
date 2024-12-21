@@ -30,6 +30,8 @@ const EditTranscription = ({ initialText, onSave }) => {
 EditTranscription.propTypes = {
   initialText: PropTypes.string,
   onSave: PropTypes.func.isRequired,
+  editedText: PropTypes.string,
+  setEditedText: PropTypes.func,
 };
 
 const styles = StyleSheet.create({
