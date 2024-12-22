@@ -1,7 +1,9 @@
 // src/components/TranscriptionDisplay.js
-import React from 'react';
+import React, { useState } from 'react';
+import * as Clipboard from 'expo-clipboard';
+
 import PropTypes from 'prop-types';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet, Button } from 'react-native';
 
 /**
  * Component for displaying the transcribed text.
@@ -9,10 +11,22 @@ import { View, Text, StyleSheet } from 'react-native';
  * It also provides an option to send the text to the EditTranscription component for editing.
  */
 const TranscriptionDisplay = ({ displayText = '' }) => {
+  const [copiedText, setCopiedText] = useState('');
+
+  const copyToClipboard = async () => {
+    await Clipboard.setStringAsync(displayText);
+  };
   return (
     <View style={styles.container}>
       <Text style={styles.heading}>Transcribed Text</Text>
-      <Text style={styles.text}>{displayText}</Text>
+      <Button
+        title="Click here to copy to Clipboard"
+        onPress={copyToClipboard}
+      />
+
+      <Text selectable={true} selectionColor="blue" style={styles.text}>
+        {displayText}
+      </Text>
     </View>
   );
 };

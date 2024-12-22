@@ -17,6 +17,8 @@ const EditTranscription = ({ initialText, onSave }) => {
     <View style={styles.editContainer}>
       <Text style={styles.header}>Edit Transcription</Text>
       <TextInput
+        selectable={true}
+        selectionColor="blue"
         style={styles.textInput}
         value={editedText}
         onChangeText={handleTextChange}
