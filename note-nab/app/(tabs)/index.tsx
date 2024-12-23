@@ -1,15 +1,30 @@
 import React, { useState } from 'react';
-import { StyleSheet, ScrollView, Image } from 'react-native';
+import {
+  StyleSheet,
+  ScrollView,
+  Image,
+  View,
+  Text,
+  Switch,
+  Platform,
+} from 'react-native';
 import UploadComponent from '@/components/UploadComponent';
 import TranscriptionDisplay from '@/components/TranscriptionDisplay';
 import EditTranscription from '@/components/EditTranscription';
 import useTranscription from '@/hooks/useTranscription';
+import useTranscriptionLocal from '@/hooks/useTranscription-local';
 import { ThemedText } from '@/components/ThemedText';
 import { ThemedView } from '@/components/ThemedView';
+import FlashMessage from 'react-native-flash-message';
+// import * as Progress from 'expo-progress';
 
 const HomeScreen = () => {
-  const { transcription, transcribeImage, isLoading } = useTranscription();
+  const [useLocal, setUseLocal] = useState(false);
   const [editedText, setEditedText] = useState('');
+
+  const { transcription, transcribeImage, isLoading, progress } = useLocal
+    ? useTranscriptionLocal()
+    : useTranscription();
 
   const handleSave = (editedText: string) => {
     setEditedText(editedText);
@@ -20,11 +35,24 @@ const HomeScreen = () => {
       <ThemedView style={styles.titleContainer}>
         <ThemedText type="title">NoteNab</ThemedText>
       </ThemedView>
+
       {isLoading ? (
-        <Image source={require('@/assets/images/linesmeeting.gif')} />
+        <>
+          <Image source={require('@/assets/images/linesmeeting.gif')} />
+          {/* {progress && <Progress.Bar progress={progress} color="blue" />} */}
+        </>
       ) : (
         <>
           <UploadComponent transcribeImage={transcribeImage} />
+          {Platform.OS === 'web' && (
+            <View style={styles.switchContainer}>
+              <Text>Use Local Transcription</Text>
+              <Switch
+                value={useLocal}
+                onValueChange={(value) => setUseLocal(value)}
+              />
+            </View>
+          )}
           {transcription && (
             <>
               <TranscriptionDisplay
@@ -40,6 +68,8 @@ const HomeScreen = () => {
           )}
         </>
       )}
+      {/* GLOBAL FLASH MESSAGE COMPONENT INSTANCE */}
+      <FlashMessage position="top" />
     </ScrollView>
   );
 };
@@ -52,7 +82,11 @@ const styles = StyleSheet.create({
     padding: 16,
     backgroundColor: 'white',
   },
-
+  switchContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 20,
+  },
   titleContainer: {
     flexDirection: 'row',
     alignItems: 'center',

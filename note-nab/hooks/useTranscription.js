@@ -1,5 +1,7 @@
 // src/hooks/useTranscription.js
 import { useState } from 'react';
+import { useEffect } from 'react';
+import { showMessage } from 'react-native-flash-message';
 
 /**
  * Custom hook to handle the transcription of images using Tesseract.js.
@@ -10,7 +12,16 @@ const useTranscription = () => {
   const [transcription, setTranscription] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
-
+  const [progress, setProgress] = useState(0);
+  useEffect(() => {
+    if (error) {
+      showMessage({
+        message: error.message,
+        type: 'danger',
+        duration: 3000,
+      });
+    }
+  }, [error]);
   /**
    * Transcribes the given image file using OpenAI's API.
    * @param {File} image - The image file to be transcribed.
@@ -53,6 +64,7 @@ const useTranscription = () => {
     transcription,
     isLoading,
     error,
+    progress,
   };
 };
 
