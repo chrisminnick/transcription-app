@@ -21,12 +21,14 @@ an app for transcribing handwritten documents
 - hosting of the API server
 - database
 - scalability
-- import local mode?
-- switch between local and AI mode
 - test on android
 - design a logo
+- local mode on mobile
+- improve toaster style
 
 # done
 
 - loader/spinner while processing
 - make it work on mobile
+- implement local mode (web version only)
+- toaster for status messages
