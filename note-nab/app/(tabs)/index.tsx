@@ -8,6 +8,7 @@ import {
   Switch,
   Platform,
 } from 'react-native';
+
 import UploadComponent from '@/components/UploadComponent';
 import TranscriptionDisplay from '@/components/TranscriptionDisplay';
 import EditTranscription from '@/components/EditTranscription';
@@ -23,8 +24,8 @@ const HomeScreen = () => {
   const [editedText, setEditedText] = useState('');
 
   const { transcription, transcribeImage, isLoading, progress } = useLocal
-    ? useTranscriptionLocal()
-    : useTranscription();
+    ? useTranscription()
+    : useTranscriptionLocal();
 
   const handleSave = (editedText: string) => {
     setEditedText(editedText);
@@ -45,13 +46,16 @@ const HomeScreen = () => {
         <>
           <UploadComponent transcribeImage={transcribeImage} />
           {Platform.OS === 'web' && (
-            <View style={styles.switchContainer}>
-              <Text>Use Local Transcription</Text>
-              <Switch
-                value={useLocal}
-                onValueChange={(value) => setUseLocal(value)}
-              />
-            </View>
+            <>
+              <View style={styles.switchContainer}>
+                <Text style={styles.typeWriter}>abc&nbsp;</Text>
+                <Switch
+                  value={useLocal}
+                  onValueChange={(value) => setUseLocal(value)}
+                />
+                <Text style={styles.handwritingMode}>&nbsp;abc</Text>
+              </View>
+            </>
           )}
           {transcription && (
             <>
@@ -75,6 +79,14 @@ const HomeScreen = () => {
 };
 
 const styles = StyleSheet.create({
+  handwritingMode: {
+    fontFamily: 'Cursive',
+    fontSize: 20,
+  },
+  typeWriter: {
+    fontFamily: 'American Typewriter',
+    fontSize: 18,
+  },
   appContainer: {
     flexGrow: 1,
     justifyContent: 'center',
