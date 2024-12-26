@@ -20,10 +20,12 @@ import FlashMessage from 'react-native-flash-message';
 // import * as Progress from 'expo-progress';
 
 const HomeScreen = () => {
-  const [useLocal, setUseLocal] = useState(false);
+  const [useAI, setUseAI] = useState(() =>
+    Platform.OS !== 'web' ? true : false
+  );
   const [editedText, setEditedText] = useState('');
 
-  const { transcription, transcribeImage, isLoading, progress } = useLocal
+  const { transcription, transcribeImage, isLoading, progress } = useAI
     ? useTranscription()
     : useTranscriptionLocal();
 
@@ -50,8 +52,8 @@ const HomeScreen = () => {
               <View style={styles.switchContainer}>
                 <Text style={styles.typeWriter}>abc&nbsp;</Text>
                 <Switch
-                  value={useLocal}
-                  onValueChange={(value) => setUseLocal(value)}
+                  value={useAI}
+                  onValueChange={(value) => setUseAI(value)}
                 />
                 <Text style={styles.handwritingMode}>&nbsp;abc</Text>
               </View>

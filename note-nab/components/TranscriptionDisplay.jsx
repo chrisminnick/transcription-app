@@ -2,9 +2,10 @@
 import React from 'react';
 import * as Clipboard from 'expo-clipboard';
 import { showMessage, hideMessage } from 'react-native-flash-message';
+import { ThemedText } from '@/components/ThemedText';
 
 import PropTypes from 'prop-types';
-import { View, Text, StyleSheet, Button } from 'react-native';
+import { View, StyleSheet, Button } from 'react-native';
 
 /**
  * Component for displaying the transcribed text.
@@ -22,15 +23,15 @@ const TranscriptionDisplay = ({ displayText = '' }) => {
   };
   return (
     <View style={styles.container}>
-      <Text style={styles.heading}>Transcribed Text</Text>
+      <ThemedText type="subtitle">Transcribed Text</ThemedText>
       <Button
         title="Click here to copy to Clipboard"
         onPress={copyToClipboard}
       />
 
-      <Text selectable={true} selectionColor="blue" style={styles.text}>
+      <ThemedText type="default" selectable={true} selectionColor="blue">
         {displayText}
-      </Text>
+      </ThemedText>
     </View>
   );
 };
@@ -44,14 +45,6 @@ const styles = StyleSheet.create({
   container: {
     padding: 16,
     backgroundColor: '#fff',
-  },
-  heading: {
-    fontSize: 20,
-    fontWeight: 'bold',
-    marginBottom: 8,
-  },
-  text: {
-    fontSize: 16,
   },
 });
 

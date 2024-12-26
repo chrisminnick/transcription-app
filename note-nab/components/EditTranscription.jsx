@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, Button, StyleSheet } from 'react-native';
+import { View, TextInput, Button, StyleSheet } from 'react-native';
 import PropTypes from 'prop-types';
+import { ThemedText } from '@/components/ThemedText';
 
 const EditTranscription = ({ initialText, onSave }) => {
   const [editedText, setEditedText] = useState(initialText);
@@ -15,7 +16,7 @@ const EditTranscription = ({ initialText, onSave }) => {
 
   return (
     <View style={styles.editContainer}>
-      <Text style={styles.header}>Edit Transcription</Text>
+      <ThemedText type="subtitle">Edit Transcription</ThemedText>
       <TextInput
         selectable={true}
         selectionColor="blue"
@@ -40,10 +41,7 @@ const styles = StyleSheet.create({
   editContainer: {
     padding: 20,
   },
-  header: {
-    fontSize: 20,
-    marginBottom: 10,
-  },
+
   textInput: {
     height: 100,
     borderColor: 'gray',

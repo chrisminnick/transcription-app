@@ -1,7 +1,8 @@
 // src/components/UploadComponent.js
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import { View, StyleSheet, TouchableOpacity } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
+import { ThemedText } from '@/components/ThemedText';
 
 /**
  * Component for handling the upload of image files for transcription.
@@ -42,7 +43,9 @@ const UploadComponent = ({ transcribeImage }) => {
   return (
     <View style={styles.container}>
       <TouchableOpacity style={styles.button} onPress={handleUpload}>
-        <Text style={styles.buttonText}>Select Image</Text>
+        <ThemedText type="subheading" style={{ color: '#fff' }}>
+          Select Image
+        </ThemedText>
       </TouchableOpacity>
     </View>
   );
@@ -53,22 +56,13 @@ const styles = StyleSheet.create({
     padding: 16,
     backgroundColor: '#fff',
   },
-  heading: {
-    fontSize: 20,
-    fontWeight: 'bold',
-    marginBottom: 8,
-  },
+
   button: {
     marginTop: 16,
     borderRadius: 8,
     padding: 16,
     color: '#fff',
     backgroundColor: '#007AFF',
-  },
-  buttonText: {
-    color: '#fff',
-    fontSize: 16,
-    textAlign: 'center',
   },
 });
 
