@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import { View, StyleSheet, TouchableOpacity } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
 import { ThemedText } from '@/components/ThemedText';
-
+import ImageInput from './ImageInput';
 /**
  * Component for handling the upload of image files for transcription.
  * This component provides an interface for users to select an image file,
