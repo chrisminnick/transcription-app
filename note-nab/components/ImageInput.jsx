@@ -6,10 +6,10 @@ import {
   TouchableWithoutFeedback,
   View,
 } from 'react-native';
-import ThemedText from './ThemedText';
-import colors from '../constants/Colors';
+import Colors from '../constants/Colors';
 import useCamera from '../hooks/useCamera';
 import usePhotos from '../hooks/usePhotos';
+import { IconSymbol } from '@/components/ui/IconSymbol';
 
 function ImageInput({
   imageUri,
@@ -69,9 +69,8 @@ function ImageInput({
     <TouchableWithoutFeedback onPress={handlePress}>
       <View style={styles.container}>
         {!imageUri ? (
-          <ThemedText style={styles.text}>take a picture</ThemedText>
+          <IconSymbol name="camera" size={75} iconColor={colors.medium} />
         ) : (
-          // <Icon name="camera" size={75} iconColor={colors.medium} />
           <Image source={{ uri: imageUri }} style={styles.image} />
         )}
       </View>
@@ -82,7 +81,6 @@ function ImageInput({
 const styles = StyleSheet.create({
   container: {
     alignItems: 'center',
-    // backgroundColor: colors.light,
     borderRadius: 15,
     justifyContent: 'center',
     height: 100,
