@@ -1,25 +1,13 @@
-import { StyleSheet, Image, Platform } from 'react-native';
+import { StyleSheet, Image, Platform, ScrollView } from 'react-native';
 
 import { Collapsible } from '@/components/Collapsible';
-import { ExternalLink } from '@/components/ExternalLink';
-import ParallaxScrollView from '@/components/ParallaxScrollView';
+
 import { ThemedText } from '@/components/ThemedText';
 import { ThemedView } from '@/components/ThemedView';
-import { IconSymbol } from '@/components/ui/IconSymbol';
 
-export default function TabTwoScreen() {
+export default function HistoryScreen() {
   return (
-    <ParallaxScrollView
-      headerBackgroundColor={{ light: '#D0D0D0', dark: '#353636' }}
-      headerImage={
-        <IconSymbol
-          size={310}
-          color="#808080"
-          name="chevron.left.forwardslash.chevron.right"
-          style={styles.headerImage}
-        />
-      }
-    >
+    <ScrollView contentContainerStyle={styles.appContainer}>
       <ThemedView style={styles.titleContainer}>
         <ThemedText type="title">History</ThemedText>
       </ThemedView>
@@ -27,19 +15,35 @@ export default function TabTwoScreen() {
       <Collapsible title="Coming soon">
         <ThemedText>This isn't working yet.</ThemedText>
       </Collapsible>
-    </ParallaxScrollView>
+    </ScrollView>
   );
 }
 
 const styles = StyleSheet.create({
-  headerImage: {
-    color: '#808080',
-    bottom: -90,
-    left: -35,
-    position: 'absolute',
+  handwritingMode: {
+    fontFamily: 'Cursive',
+    fontSize: 20,
+  },
+  typeWriter: {
+    fontFamily: 'American Typewriter',
+    fontSize: 18,
+  },
+  appContainer: {
+    flexGrow: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    padding: 16,
+    backgroundColor: 'white',
+  },
+  switchContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 20,
   },
   titleContainer: {
     flexDirection: 'row',
+    alignItems: 'center',
+    marginTop: 30,
     gap: 8,
   },
 });
